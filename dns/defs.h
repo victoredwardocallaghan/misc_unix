@@ -1,3 +1,14 @@
+#ifndef _DEFS_H_
+#define _DEFS_H_
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#ifdef _POSIX_SOURCE /* tmp */
+#error
+#endif
+
 #if defined(FREEBSD) || defined(DARWIN)
 #define BSD_DERIVED
 #endif
@@ -35,3 +46,38 @@
 #include <fcntl.h>
 #include <assert.h>
 #include "ec.h"
+
+#include "logf.h"
+#include "options.h"
+#include "macrostr.h"
+#include "extio.h"
+
+/*
+    File-permission-bit symbols
+*/
+/*[defs-perm]*/
+#define PERM_DIRECTORY  S_IRWXU
+#define PERM_FILE       (S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)
+/*[]*/
+
+bool setblock(int fd, bool on); /* also in c4/setblock.h */
+#define syserrmsg(buf, buf_max, msg, s_errno)\
+  syserrmsgtype(buf, buf_max, msg, s_errno, EC_ERRNO)
+char *syserrmsgtype(char *buf, size_t buf_max, const char *msg,
+  int s_errno, EC_ERRTYPE type);
+char *syserrmsgline(char *buf, size_t buf_max,
+  int s_errno, EC_ERRTYPE type);
+const char *getdate_strerror(int e);
+const char *errsymbol(int errno_arg);
+void syserr(const char *msg);
+void syserr_print(const char *msg);
+void timestart(void);
+void timestop(char *msg);
+
+unsigned long getblksize(const char *path); /* c2/getvlksize.c */
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
+
+#endif /* _DEFS_H_ */

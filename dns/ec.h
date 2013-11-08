@@ -1,3 +1,5 @@
+#ifndef _EC_H_
+#define _EC_H_
 
 extern const bool ec_in_cleanup;
 
@@ -60,3 +62,13 @@ typedef enum {EC_ERRNO, EC_EAI} EC_ERRTYPE;
       ec_print();\
       ec_reinit();\
     }
+
+#define EC_EINTERNAL INT_MAX
+
+void ec_push(const char *fcn, const char *file, int line,
+  const char *str, int errno_arg, EC_ERRTYPE type);
+void ec_print(void);
+void ec_reinit(void);
+void ec_warn(void);
+
+#endif /* _EC_H_ */
